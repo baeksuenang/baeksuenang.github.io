@@ -6,7 +6,6 @@
 
 - `index.html` — About (소개, 관심 분야, 연락처 아이콘)
 - `publications.html` — 논문 목록 (연도별)
-- `projects.html` — 프로젝트 카드 (`<li class="project">` 블록 복사해서 추가)
 - `cv.html` — Education / Research Experience / Awards / Timeline / Skills
 - `style.css` — 디자인 (맨 위 `--accent` 가 포인트 색)
 - `images/profile-1~4.jpg` + `photos.js` — 프로필 사진 (누를 때마다 찰칵 하고 다음 사진). 사진 추가는 400x480 크기로 넣고 `PHOTOS` 목록에 경로 추가
