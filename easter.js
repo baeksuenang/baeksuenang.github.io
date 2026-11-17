@@ -261,44 +261,92 @@
     });
   }
 
-  // ---------- 7. Generative AI: 붓으로 그리기 ----------
-  function gen(ctx, t) {
-    const P = 3.4, p = (t % P) / P;
-    const path = u => [20 + 180 * u, 72 + 26 * Math.sin(u * Math.PI * 2.4 + 0.4) * (0.55 + 0.45 * u) - 10 * u];
-    const end = ease(clamp(p / 0.6)), fade = p > 0.82 ? 1 - (p - 0.82) / 0.18 : 1;
-    ctx.globalAlpha = fade; ctx.lineCap = "round";
-    const N = 80;
-    for (let s = 0; s < 3; s++) {
-      for (let i = 1; i <= N * end; i++) {
-        const u0 = (i - 1) / N, u1 = i / N, [x0, y0] = path(u0), [x1, y1] = path(u1);
-        const w = 4 + 6 * Math.sin(Math.PI * u1);
-        const off = (s - 1) * w * 0.32;
-        const dx = x1 - x0, dy = y1 - y0, L = Math.hypot(dx, dy) || 1, nx = -dy / L, ny = dx / L;
-        ctx.strokeStyle = s === 1 ? C.a : C.d; ctx.globalAlpha = fade * (s === 1 ? 1 : 0.35);
-        ctx.lineWidth = s === 1 ? w : 1.2;
-        ctx.beginPath(); ctx.moveTo(x0 + nx * off, y0 + ny * off); ctx.lineTo(x1 + nx * off, y1 + ny * off); ctx.stroke();
-      }
+  // ---------- 7. Generative AI: NeRF (여러 장의 2D 사진 → 3D) ----------
+  const CUBE = (() => {
+    const V = [];
+    for (const x of [-1, 1]) for (const y of [-1, 1]) for (const z of [-1, 1]) V.push([x, y, z]);
+    const E = [];
+    for (let i = 0; i < 8; i++) for (let j = i + 1; j < 8; j++) {
+      const d = V[i].reduce((s, v, k) => s + (v !== V[j][k]), 0); if (d === 1) E.push([i, j]);
     }
-    ctx.globalAlpha = 1; ctx.lineCap = "butt";
-    // 반짝 ✦
-    if (p > 0.58 && p < 0.86) {
-      const q = (p - 0.58) / 0.28, sc = Math.sin(Math.PI * q);
-      [[196, 30, 7], [176, 18, 4.5], [208, 52, 4]].forEach(([x, y, s]) => {
-        const z = s * sc; ctx.fillStyle = C.a;
-        ctx.beginPath(); ctx.moveTo(x, y - z); ctx.quadraticCurveTo(x, y, x + z, y); ctx.quadraticCurveTo(x, y, x, y + z);
-        ctx.quadraticCurveTo(x, y, x - z, y); ctx.quadraticCurveTo(x, y, x, y - z); ctx.fill();
+    const F = [[0, 1, 3, 2, [-1, 0, 0]], [4, 5, 7, 6, [1, 0, 0]], [0, 1, 5, 4, [0, -1, 0]],
+               [2, 3, 7, 6, [0, 1, 0]], [0, 2, 6, 4, [0, 0, -1]], [1, 3, 7, 5, [0, 0, 1]]];
+    const r = rng(5), D = [];
+    for (let i = 0; i < 110; i++) D.push([(2 * r() - 1) * 0.62, (2 * r() - 1) * 0.62, (2 * r() - 1) * 0.62]);
+    return { V, E, F, D };
+  })();
+  function rot3(v, a, b) {
+    const x1 = v[0] * Math.cos(a) + v[2] * Math.sin(a), z1 = -v[0] * Math.sin(a) + v[2] * Math.cos(a);
+    return [x1, v[1] * Math.cos(b) - z1 * Math.sin(b), v[1] * Math.sin(b) + z1 * Math.cos(b)];
+  }
+  // 음영 있는 정육면체 (s: 크기 배율)
+  function solidCube(ctx, cx, cy, k, a, b, s, alpha = 1) {
+    const L = [-0.45, 0.6, 0.66];
+    ctx.globalAlpha = alpha;
+    CUBE.F.forEach(([i, j, m, n, nor]) => {
+      const N = rot3(nor, a, b); if (N[2] <= 0) return;
+      const lit = clamp(0.35 + 0.65 * (N[0] * L[0] + N[1] * L[1] + N[2] * L[2]));
+      const col = [lerp(168, 255, lit), lerp(95, 214, lit), lerp(0, 150, lit)].map(Math.round);
+      ctx.beginPath();
+      [i, j, m, n].forEach((q, idx) => {
+        const v = rot3(CUBE.V[q].map(c => c * s), a, b);
+        ctx[idx ? "lineTo" : "moveTo"](cx + k * v[0], cy - k * v[1]);
       });
+      ctx.closePath(); ctx.fillStyle = `rgb(${col})`; ctx.fill();
+      ctx.strokeStyle = C.k; ctx.lineWidth = 0.9; ctx.stroke();
+    });
+    ctx.globalAlpha = 1;
+  }
+  function nerf(ctx, t) {
+    const P = 4.4, p = (t % P) / P, a = t * 0.8, b = 0.45;
+    const fade = p > 0.93 ? 1 - (p - 0.93) / 0.07 : 1;
+    const views = [[30, 24, 0.35], [30, 63, 1.4], [30, 102, 2.6]];  // 서로 다른 각도에서 찍은 2D 사진
+    const M = [97, 63], O = [176, 63];
+    ctx.globalAlpha = fade;
+    // 1) 2D 사진들
+    views.forEach(([x, y, ang], i) => {
+      const on = clamp((p - i * 0.05) / 0.08);
+      ctx.globalAlpha = fade * on;
+      ctx.fillStyle = "#fff"; ctx.fillRect(x - 19, y - 14, 38, 28);
+      ctx.strokeStyle = C.k; ctx.lineWidth = 1.2; ctx.strokeRect(x - 19, y - 14, 38, 28);
+      solidCube(ctx, x, y + 1, 7, ang, 0.4, 1, fade * on);
+    });
+    ctx.globalAlpha = fade;
+    // 2) 광선 → MLP
+    const q = clamp((p - 0.18) / 0.3);
+    views.forEach(([x, y]) => {
+      ctx.strokeStyle = C.l; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(x + 20, y); ctx.lineTo(M[0] - 26, M[1]); ctx.stroke();
+      if (q > 0 && q < 1) for (let j = 0; j < 3; j++) {
+        const u = (q * 2.5 + j / 3) % 1;
+        circle(ctx, lerp(x + 20, M[0] - 26, u), lerp(y, M[1], u), 2, C.a);
+      }
+    });
+    rr(ctx, M[0] - 25, M[1] - 17, 50, 34, 7); ctx.fillStyle = C.s; ctx.fill();
+    ctx.strokeStyle = C.a; ctx.lineWidth = 1.6 + (q > 0 && q < 1 ? Math.sin(t * 14) * 0.6 : 0); ctx.stroke();
+    text(ctx, "NeRF", M[0], M[1] - 6, 11, C.d, 600);
+    text(ctx, "(x,d)→(c,σ)", M[0], M[1] + 8, 7.5, C.d, 500);
+    // 3) 볼륨 렌더링 → 3D
+    const r2 = clamp((p - 0.42) / 0.25);
+    arrow(ctx, M[0] + 26, M[1], O[0] - 40, O[1], r2 > 0 ? C.a : C.l, 1.3);
+    ctx.setLineDash([2, 3]); ctx.strokeStyle = C.m; ctx.lineWidth = 0.8;     // 볼륨 상자
+    CUBE.E.forEach(([i, j]) => {
+      const u = rot3(CUBE.V[i], a, b), v = rot3(CUBE.V[j], a, b);
+      ctx.beginPath(); ctx.moveTo(O[0] + 22 * u[0], O[1] - 22 * u[1]); ctx.lineTo(O[0] + 22 * v[0], O[1] - 22 * v[1]); ctx.stroke();
+    });
+    ctx.setLineDash([]);
+    const solid = clamp((p - 0.62) / 0.14);
+    const nPts = Math.floor(CUBE.D.length * r2);                            // 밀도(σ) 점들이 차오름
+    ctx.fillStyle = C.a; ctx.globalAlpha = fade * (1 - solid) * 0.8;
+    for (let i = 0; i < nPts; i++) {
+      const v = rot3(CUBE.D[i], a, b);
+      ctx.beginPath(); ctx.arc(O[0] + 22 * v[0], O[1] - 22 * v[1], 1.6, 0, Math.PI * 2); ctx.fill();
     }
-    // 붓
-    if (p < 0.8) {
-      const [hx, hy] = path(end), lift = p > 0.6 ? (p - 0.6) / 0.2 : 0;
-      ctx.save(); ctx.translate(hx + 10 * lift, hy - 14 * lift); ctx.rotate(0.55);
-      ctx.fillStyle = C.d;
-      ctx.beginPath(); ctx.moveTo(0, 0); ctx.quadraticCurveTo(-5, -6, -4, -13); ctx.lineTo(4, -13); ctx.quadraticCurveTo(5, -6, 0, 0); ctx.fill();
-      ctx.fillStyle = C.m; ctx.fillRect(-4.5, -21, 9, 8);
-      ctx.fillStyle = C.k; rr(ctx, -2.8, -46, 5.6, 26, 2.5); ctx.fill();
-      ctx.restore();
-    }
+    if (solid > 0) solidCube(ctx, O[0], O[1], 22, a, b, 0.62, fade * solid);
+    ctx.globalAlpha = fade;
+    text(ctx, "2D views", 30, 124, 8.5, C.m, 500);
+    text(ctx, "3D scene", O[0], 124, 8.5, C.m, 500);
+    ctx.globalAlpha = 1;
   }
 
   const ANIMS = {
@@ -308,7 +356,7 @@
     diff: { draw: diff, cap: "data ⇄ 2D Gaussian (forward noise / reverse denoise)" },
     geo: { draw: geo, cap: "building a 3D convex hull" },
     causal: { draw: causal, cap: "proximal causal inference: hidden U, proxies Z & W" },
-    gen: { draw: gen, cap: "generating, one brushstroke at a time" }
+    gen: { draw: nerf, cap: "NeRF: 2D views → rays → (color, density) → 3D" }
   };
 
   // ---------- 팝업 ----------
