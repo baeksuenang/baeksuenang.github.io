@@ -186,8 +186,12 @@ footer .wrap { padding-top: 26px; padding-bottom: 56px; font-size: .85rem; color
   .pixel-me { width: 60px; height: 60px; }
   .bubble { right: 18px; }
   h1 { font-size: 1.95rem; }
+  .name-row h1 { font-size: min(1.95rem, 8.2vw); white-space: nowrap; }
   h2 { margin-top: 60px; }
   .pub-year { grid-template-columns: 1fr; gap: 4px; }
   .entry { flex-direction: column-reverse; gap: 0; }
   .news li, .timeline li { grid-template-columns: 1fr; gap: 0; }
 }
+
+/* 이름에서 "SeongHyun"만 주황색 */
+.given { color: var(--accent); }
