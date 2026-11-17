@@ -46,7 +46,25 @@ ul { margin: 0 0 22px; padding-left: 20px; }
 
 /* ===== About: 사진 + 이름 ===== */
 .intro { display: grid; grid-template-columns: 200px 1fr; gap: 48px; align-items: center; }
-.intro img { width: 200px; height: 240px; object-fit: cover; border-radius: 10px; display: block; }
+/* 프로필 사진 (누르면 찰칵) */
+.photo {
+  position: relative; width: 200px; height: 240px; padding: 0; border: 0;
+  border-radius: 10px; overflow: hidden; cursor: pointer; background: var(--line); display: block;
+}
+.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photo .flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
+.photo .cam {
+  position: absolute; right: 8px; bottom: 8px; font-size: .8rem; color: #fff;
+  background: rgba(0, 0, 0, .45); width: 28px; height: 28px; border-radius: 50%;
+  display: grid; place-items: center; opacity: 0; transition: opacity .15s;
+}
+.photo:hover .cam, .photo:focus-visible .cam { opacity: 1; }
+.photo:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+.photo.snap { animation: snap .28s ease-out; }
+.photo.snap .flash { animation: flash .35s ease-out; }
+@keyframes snap { 0% { transform: scale(1); } 30% { transform: scale(.97); } 100% { transform: scale(1); } }
+@keyframes flash { 0% { opacity: 0; } 20% { opacity: .95; } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .photo.snap { animation: none; } }
 
 /* 이름 + 도트 캐릭터 */
 .name-row { display: flex; align-items: flex-end; gap: 10px; margin: 0 0 12px; }
@@ -144,7 +162,7 @@ footer .wrap { padding-top: 26px; padding-bottom: 56px; font-size: .85rem; color
   html { font-size: 17px; }
   main.wrap { padding-top: 44px; }
   .intro { grid-template-columns: 1fr; gap: 20px; }
-  .intro img { width: 140px; height: 168px; }
+  .photo { width: 140px; height: 168px; }
   .pixel-me { width: 60px; height: 60px; }
   .bubble { right: 18px; }
   h1 { font-size: 1.95rem; }

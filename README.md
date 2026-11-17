@@ -8,7 +8,7 @@
 - `publications.html` — 논문 목록 (연도별)
 - `cv.html` — Education / Research Experience / Awards / Timeline / Skills
 - `style.css` — 디자인 (맨 위 `--accent` 가 포인트 색)
-- `images/profile.jpg` — 프로필 사진 (없으면 회색 기본 이미지)
+- `images/profile-1~4.jpg` + `photos.js` — 프로필 사진 (누를 때마다 찰칵 하고 다음 사진). 사진 추가는 400x480 크기로 넣고 `PHOTOS` 목록에 경로 추가
 - `pixel-me.js` — 이름 옆 도트 캐릭터 (클릭하면 손 흔들며 인사). 대사는 `LINES` 배열에서 수정
 
 ## 수정 방법

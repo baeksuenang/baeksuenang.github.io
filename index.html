@@ -26,8 +26,12 @@
 
 <main class="wrap">
   <section class="intro">
-    <!-- 사진: images/profile.jpg 를 넣으면 자동으로 바뀝니다 -->
-    <img src="images/profile.jpg" alt="SeongHyun Baek" onerror="this.onerror=null;this.src='images/placeholder.svg'">
+    <!-- 사진: 누를 때마다 찰칵 하고 다음 사진. 목록은 photos.js 의 PHOTOS -->
+    <button class="photo" type="button" aria-label="Show next photo">
+      <img src="images/profile-1.jpg" alt="SeongHyun Baek">
+      <span class="flash"></span>
+      <i class="fa-solid fa-camera cam" aria-hidden="true"></i>
+    </button>
     <div>
       <div class="name-row">
         <h1>SeongHyun Baek</h1>
@@ -73,6 +77,7 @@
 <footer><div class="wrap">© 2026 SeongHyun Baek · Last updated Nov 2026</div></footer>
 
 <script src="pixel-me.js"></script>
+<script src="photos.js"></script>
 
 </body>
 </html>
