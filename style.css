@@ -46,35 +46,38 @@ ul { margin: 0 0 22px; padding-left: 20px; }
 
 /* ===== About: 사진 + 이름 ===== */
 .intro { display: grid; grid-template-columns: 200px 1fr; gap: 48px; align-items: center; }
+.intro img { width: 200px; height: 240px; object-fit: cover; border-radius: 10px; display: block; }
 
-/* 도트 캐릭터 */
+/* 이름 + 도트 캐릭터 */
+.name-row { display: flex; align-items: flex-end; gap: 10px; margin: 0 0 12px; }
+.name-row h1 { margin: 0; }
 .pixel-me {
-  position: relative; width: 200px; height: 200px; padding: 0; border: 0;
-  background: var(--accent); border-radius: 10px; cursor: pointer;
+  position: relative; flex: none; width: 80px; height: 80px; padding: 0; border: 0;
+  background: none; cursor: pointer;
 }
 .pixel-me canvas {
-  width: 100%; height: 100%; display: block; border-radius: 10px;
+  width: 100%; height: 100%; display: block;
   image-rendering: pixelated; image-rendering: crisp-edges;
 }
 .pixel-me:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
-.pixel-me:hover canvas { transform: translateY(-3px); }
+.pixel-me:hover canvas { transform: translateY(-2px); }
 .pixel-me.hop canvas { animation: hop .6s steps(4) 2; }
 @keyframes hop {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  50% { transform: translateY(-6px); }
 }
 .bubble {
-  position: absolute; left: 140px; top: -26px; z-index: 2;
+  position: absolute; right: 26px; bottom: calc(100% - 4px); z-index: 2;
   background: #fff; color: var(--text); border: 2px solid var(--text); border-radius: 0;
   font: 500 .82rem/1.3 var(--font); white-space: nowrap; padding: 4px 9px;
   box-shadow: 3px 3px 0 var(--text);
   opacity: 0; transform: translateY(4px); transition: opacity .15s, transform .15s; pointer-events: none;
 }
 .bubble::after {
-  content: ""; position: absolute; left: 10px; bottom: -8px;
+  content: ""; position: absolute; right: 10px; bottom: -8px;
   width: 8px; height: 8px; background: #fff;
   border-right: 2px solid var(--text); border-bottom: 2px solid var(--text);
-  transform: skewX(-30deg);
+  transform: skewX(30deg);
 }
 .bubble.show { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
@@ -141,9 +144,10 @@ footer .wrap { padding-top: 26px; padding-bottom: 56px; font-size: .85rem; color
   html { font-size: 17px; }
   main.wrap { padding-top: 44px; }
   .intro { grid-template-columns: 1fr; gap: 20px; }
-  .pixel-me { width: 160px; height: 160px; }
-  .bubble { left: 112px; }
-  h1 { font-size: 2.2rem; }
+  .intro img { width: 140px; height: 168px; }
+  .pixel-me { width: 60px; height: 60px; }
+  .bubble { right: 18px; }
+  h1 { font-size: 1.95rem; }
   h2 { margin-top: 60px; }
   .pub-year { grid-template-columns: 1fr; gap: 4px; }
   .entry { flex-direction: column-reverse; gap: 0; }

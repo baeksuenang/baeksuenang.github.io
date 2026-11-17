@@ -26,13 +26,17 @@
 
 <main class="wrap">
   <section class="intro">
-    <!-- 도트 캐릭터: 모양/대사는 pixel-me.js 에서 수정 -->
-    <button class="pixel-me" type="button" aria-label="Say hi">
-      <canvas role="img" aria-label="Pixel-art avatar of SeongHyun Baek"></canvas>
-      <span class="bubble" aria-live="polite"></span>
-    </button>
+    <!-- 사진: images/profile.jpg 를 넣으면 자동으로 바뀝니다 -->
+    <img src="images/profile.jpg" alt="SeongHyun Baek" onerror="this.onerror=null;this.src='images/placeholder.svg'">
     <div>
-      <h1>SeongHyun Baek</h1>
+      <div class="name-row">
+        <h1>SeongHyun Baek</h1>
+        <!-- 도트 캐릭터: 모양/대사는 pixel-me.js 에서 수정 -->
+        <button class="pixel-me" type="button" aria-label="Say hi">
+          <canvas role="img" aria-label="Pixel-art avatar of SeongHyun Baek"></canvas>
+          <span class="bubble" aria-live="polite"></span>
+        </button>
+      </div>
       <p class="role">Undergraduate Researcher, <a href="https://madelab-cnu.com/">CNU MADE Lab</a><br>Artificial Intelligence &amp; Mathematics, Chungnam National University</p>
       <div class="contact">
         <a href="mailto:baegs409@gmail.com"><i class="fa-regular fa-envelope"></i>Email</a>

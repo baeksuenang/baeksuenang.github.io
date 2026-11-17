@@ -3,7 +3,8 @@
    각 줄: { y: "x목록" }  (예: "3-5,9" = 3,4,5,9번 칸)
    팔: 어깨→팔꿈치→손목 관절 위치로 모양을 계산해서 도트로 변환 (외곽선 자동) */
 (function () {
-  const COLORS = { K: "#1d1d1d", W: "#ffffff", O: "#fc9d0d" };
+  // K: 선, W: 빛(주황), O: 팔 안쪽 채우기(배경과 같은 흰색). 배경은 투명
+  const COLORS = { K: "#1d1d1d", W: "#fc9d0d", O: "#ffffff" };
   const SIZE = 40, DX = 4, DY = 5;
 
   // ---- 몸 ----
@@ -117,8 +118,7 @@
   canvas.width = canvas.height = SIZE;
 
   function draw(arm, glint) {
-    ctx.fillStyle = COLORS.O;
-    ctx.fillRect(0, 0, SIZE, SIZE);
+    ctx.clearRect(0, 0, SIZE, SIZE);
     paint(ctx, BODY);
     if (glint) paint(ctx, GLINT);
     if (arm != null) {
