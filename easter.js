@@ -261,92 +261,54 @@
     });
   }
 
-  // ---------- 7. Generative AI: NeRF (여러 장의 2D 사진 → 3D) ----------
-  const CUBE = (() => {
-    const V = [];
-    for (const x of [-1, 1]) for (const y of [-1, 1]) for (const z of [-1, 1]) V.push([x, y, z]);
-    const E = [];
-    for (let i = 0; i < 8; i++) for (let j = i + 1; j < 8; j++) {
-      const d = V[i].reduce((s, v, k) => s + (v !== V[j][k]), 0); if (d === 1) E.push([i, j]);
+  // ---------- 7. Generative AI: 노이즈 z → 생성기 → MNIST 손글씨 숫자 ----------
+  const G = 16;                       // 숫자 그림 해상도 (16x16)
+  const DIGITS = [3, 7, 0, 5, 2, 8, 1, 9, 4, 6], digitCache = {};
+  function digitGrid(n) {             // 글꼴로 숫자를 그려 살짝 기울인 손글씨 느낌의 밝기 격자로 변환
+    if (digitCache[n]) return digitCache[n];
+    const c = document.createElement("canvas"); c.width = c.height = G * 4;
+    const x = c.getContext("2d"), r = rng(n + 3);
+    x.translate(32, 34); x.rotate((r() - 0.5) * 0.35); x.transform(1, 0, (r() - 0.5) * 0.4, 1, 0, 0);
+    x.font = `500 54px ${FONT}`; x.textAlign = "center"; x.textBaseline = "middle";
+    x.lineWidth = 3; x.strokeStyle = x.fillStyle = "#fff"; x.fillText(String(n), 0, 0); x.strokeText(String(n), 0, 0);
+    const d = x.getImageData(0, 0, G * 4, G * 4).data, out = [];
+    for (let j = 0; j < G; j++) for (let i = 0; i < G; i++) {
+      let s = 0;
+      for (let yy = 0; yy < 4; yy++) for (let xx = 0; xx < 4; xx++) s += d[((j * 4 + yy) * G * 4 + i * 4 + xx) * 4 + 3];
+      out.push(s / (16 * 255));
     }
-    const F = [[0, 1, 3, 2, [-1, 0, 0]], [4, 5, 7, 6, [1, 0, 0]], [0, 1, 5, 4, [0, -1, 0]],
-               [2, 3, 7, 6, [0, 1, 0]], [0, 2, 6, 4, [0, 0, -1]], [1, 3, 7, 5, [0, 0, 1]]];
-    const r = rng(5), D = [];
-    for (let i = 0; i < 110; i++) D.push([(2 * r() - 1) * 0.62, (2 * r() - 1) * 0.62, (2 * r() - 1) * 0.62]);
-    return { V, E, F, D };
-  })();
-  function rot3(v, a, b) {
-    const x1 = v[0] * Math.cos(a) + v[2] * Math.sin(a), z1 = -v[0] * Math.sin(a) + v[2] * Math.cos(a);
-    return [x1, v[1] * Math.cos(b) - z1 * Math.sin(b), v[1] * Math.sin(b) + z1 * Math.cos(b)];
+    return (digitCache[n] = out);
   }
-  // 음영 있는 정육면체 (s: 크기 배율)
-  function solidCube(ctx, cx, cy, k, a, b, s, alpha = 1) {
-    const L = [-0.45, 0.6, 0.66];
-    ctx.globalAlpha = alpha;
-    CUBE.F.forEach(([i, j, m, n, nor]) => {
-      const N = rot3(nor, a, b); if (N[2] <= 0) return;
-      const lit = clamp(0.35 + 0.65 * (N[0] * L[0] + N[1] * L[1] + N[2] * L[2]));
-      const col = [lerp(168, 255, lit), lerp(95, 214, lit), lerp(0, 150, lit)].map(Math.round);
-      ctx.beginPath();
-      [i, j, m, n].forEach((q, idx) => {
-        const v = rot3(CUBE.V[q].map(c => c * s), a, b);
-        ctx[idx ? "lineTo" : "moveTo"](cx + k * v[0], cy - k * v[1]);
-      });
-      ctx.closePath(); ctx.fillStyle = `rgb(${col})`; ctx.fill();
-      ctx.strokeStyle = C.k; ctx.lineWidth = 0.9; ctx.stroke();
-    });
-    ctx.globalAlpha = 1;
-  }
-  function nerf(ctx, t) {
-    const P = 4.4, p = (t % P) / P, a = t * 0.8, b = 0.45;
-    const fade = p > 0.93 ? 1 - (p - 0.93) / 0.07 : 1;
-    const views = [[30, 24, 0.35], [30, 63, 1.4], [30, 102, 2.6]];  // 서로 다른 각도에서 찍은 2D 사진
-    const M = [97, 63], O = [176, 63];
-    ctx.globalAlpha = fade;
-    // 1) 2D 사진들
-    views.forEach(([x, y, ang], i) => {
-      const on = clamp((p - i * 0.05) / 0.08);
-      ctx.globalAlpha = fade * on;
-      ctx.fillStyle = "#fff"; ctx.fillRect(x - 19, y - 14, 38, 28);
-      ctx.strokeStyle = C.k; ctx.lineWidth = 1.2; ctx.strokeRect(x - 19, y - 14, 38, 28);
-      solidCube(ctx, x, y + 1, 7, ang, 0.4, 1, fade * on);
-    });
-    ctx.globalAlpha = fade;
-    // 2) 광선 → MLP
-    const q = clamp((p - 0.18) / 0.3);
-    views.forEach(([x, y]) => {
-      ctx.strokeStyle = C.l; ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(x + 20, y); ctx.lineTo(M[0] - 26, M[1]); ctx.stroke();
-      if (q > 0 && q < 1) for (let j = 0; j < 3; j++) {
-        const u = (q * 2.5 + j / 3) % 1;
-        circle(ctx, lerp(x + 20, M[0] - 26, u), lerp(y, M[1], u), 2, C.a);
-      }
-    });
-    rr(ctx, M[0] - 25, M[1] - 17, 50, 34, 7); ctx.fillStyle = C.s; ctx.fill();
-    ctx.strokeStyle = C.a; ctx.lineWidth = 1.6 + (q > 0 && q < 1 ? Math.sin(t * 14) * 0.6 : 0); ctx.stroke();
-    text(ctx, "NeRF", M[0], M[1] - 6, 11, C.d, 600);
-    text(ctx, "(x,d)→(c,σ)", M[0], M[1] + 8, 7.5, C.d, 500);
-    // 3) 볼륨 렌더링 → 3D
-    const r2 = clamp((p - 0.42) / 0.25);
-    arrow(ctx, M[0] + 26, M[1], O[0] - 40, O[1], r2 > 0 ? C.a : C.l, 1.3);
-    ctx.setLineDash([2, 3]); ctx.strokeStyle = C.m; ctx.lineWidth = 0.8;     // 볼륨 상자
-    CUBE.E.forEach(([i, j]) => {
-      const u = rot3(CUBE.V[i], a, b), v = rot3(CUBE.V[j], a, b);
-      ctx.beginPath(); ctx.moveTo(O[0] + 22 * u[0], O[1] - 22 * u[1]); ctx.lineTo(O[0] + 22 * v[0], O[1] - 22 * v[1]); ctx.stroke();
-    });
-    ctx.setLineDash([]);
-    const solid = clamp((p - 0.62) / 0.14);
-    const nPts = Math.floor(CUBE.D.length * r2);                            // 밀도(σ) 점들이 차오름
-    ctx.fillStyle = C.a; ctx.globalAlpha = fade * (1 - solid) * 0.8;
-    for (let i = 0; i < nPts; i++) {
-      const v = rot3(CUBE.D[i], a, b);
-      ctx.beginPath(); ctx.arc(O[0] + 22 * v[0], O[1] - 22 * v[1], 1.6, 0, Math.PI * 2); ctx.fill();
+  function mnist(ctx, t) {
+    const P = 2.6, cyc = Math.floor(t / P), p = (t % P) / P;
+    const digit = digitGrid(DIGITS[cyc % DIGITS.length]);
+    const s = p < 0.12 ? 0 : p < 0.68 ? ease((p - 0.12) / 0.56) : 1;  // 0 = 노이즈, 1 = 숫자
+    const busy = s < 1;
+    // z ~ N(0, I)
+    for (let i = 0; i < 6; i++) {
+      const v = busy ? Math.random() : 0.5 + 0.4 * Math.sin(i * 2.3 + cyc);
+      ctx.fillStyle = `rgba(252,157,13,${0.15 + 0.85 * v})`; ctx.fillRect(14, 22 + i * 13, 12, 11);
+      ctx.strokeStyle = C.d; ctx.lineWidth = 0.8; ctx.strokeRect(14, 22 + i * 13, 12, 11);
     }
-    if (solid > 0) solidCube(ctx, O[0], O[1], 22, a, b, 0.62, fade * solid);
-    ctx.globalAlpha = fade;
-    text(ctx, "2D views", 30, 124, 8.5, C.m, 500);
-    text(ctx, "3D scene", O[0], 124, 8.5, C.m, 500);
-    ctx.globalAlpha = 1;
+    text(ctx, "z", 20, 13, 11, C.k, 600);
+    // 생성기
+    arrow(ctx, 30, 59, 52, 59, C.m, 1.2);
+    const pulse = busy ? 1 + 0.05 * Math.sin(t * 18) : 1;
+    ctx.save(); ctx.translate(76, 59); ctx.scale(pulse, pulse);
+    rr(ctx, -22, -20, 44, 40, 8); ctx.fillStyle = C.s; ctx.fill(); ctx.strokeStyle = C.a; ctx.lineWidth = 1.8; ctx.stroke();
+    text(ctx, "G", 0, -3, 15, C.d, 600); text(ctx, "generator", 0, 11, 7.5, C.d, 500);
+    ctx.restore();
+    arrow(ctx, 100, 59, 120, 59, busy ? C.a : C.m, 1.2);
+    // 생성된 28x28 → (여기선 16x16) 손글씨
+    const gx = 126, gy = 19, cs = 5;
+    ctx.fillStyle = "#111"; ctx.fillRect(gx - 2, gy - 2, G * cs + 4, G * cs + 4);
+    for (let j = 0; j < G; j++) for (let i = 0; i < G; i++) {
+      const v = clamp(s * digit[j * G + i] + (1 - s) * Math.random() * 0.9);
+      const g = Math.round(17 + 238 * v);
+      ctx.fillStyle = `rgb(${g},${g},${g})`; ctx.fillRect(gx + i * cs, gy + j * cs, cs, cs);
+    }
+    text(ctx, busy ? "generating…" : `sample: "${DIGITS[cyc % DIGITS.length]}"`, gx + 40, 114, 9, busy ? C.m : C.d, 600);
+    text(ctx, "z ~ N(0, I)", 4, 114, 8.5, C.m, 500, "left");
   }
 
   const ANIMS = {
@@ -356,7 +318,7 @@
     diff: { draw: diff, cap: "data ⇄ 2D Gaussian (forward noise / reverse denoise)" },
     geo: { draw: geo, cap: "building a 3D convex hull" },
     causal: { draw: causal, cap: "proximal causal inference: hidden U, proxies Z & W" },
-    gen: { draw: nerf, cap: "NeRF: 2D views → rays → (color, density) → 3D" }
+    gen: { draw: mnist, cap: "a generator turns random noise z into a handwritten digit (MNIST)" }
   };
 
   // ---------- 팝업 ----------
