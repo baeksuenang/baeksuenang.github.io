@@ -151,6 +151,12 @@ ul { margin: 0 0 22px; padding-left: 20px; }
 .pub .links a + a::before { content: "·"; color: var(--muted); margin: 0 8px; }
 
 /* ===== Projects ===== */
+.coming-soon {
+  margin-top: 40px; padding: 56px 24px; text-align: center;
+  border: 1px dashed var(--accent); border-radius: 12px; background: var(--accent-soft);
+}
+.coming-soon p { margin: 0; color: var(--muted); }
+.coming-soon .cs-title { font-size: 1.3rem; font-weight: 600; color: var(--link); margin-bottom: 6px; }
 .projects { list-style: none; padding: 0; margin: 40px 0 0; display: grid; gap: 22px; }
 .project {
   border: 1px solid var(--line); border-radius: 12px; padding: 22px 24px;
