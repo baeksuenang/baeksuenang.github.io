@@ -150,6 +150,16 @@ ul { margin: 0 0 22px; padding-left: 20px; }
 .pub .links { font-size: .88rem; }
 .pub .links a + a::before { content: "·"; color: var(--muted); margin: 0 8px; }
 
+/* 페이지 끝 "다음 페이지" 링크 */
+.next-link {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 40px;
+  padding: 10px 18px; border: 1px solid var(--accent); border-radius: 999px;
+  font-weight: 500; font-size: .95rem;
+}
+.next-link:hover { background: var(--accent); color: #fff; text-decoration: none; }
+.next-link span { transition: transform .15s; }
+.next-link:hover span { transform: translateX(3px); }
+
 /* ===== Projects ===== */
 .coming-soon {
   margin-top: 40px; padding: 56px 24px; text-align: center;
