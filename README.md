@@ -9,6 +9,7 @@
 - `cv.html` — Education / Research Experience / Awards / Timeline / Skills
 - `style.css` — 디자인 (맨 위 `--accent` 가 포인트 색)
 - `images/profile-1~4.jpg` + `photos.js` — 프로필 사진 (누를 때마다 찰칵 하고 다음 사진). 사진 추가는 400x480 크기로 넣고 `PHOTOS` 목록에 경로 추가
+- `easter.js` — 관심 분야 키워드에 마우스를 올리면 뜨는 애니메이션 (키워드의 `data-anim` 과 `ANIMS` 이름이 연결)
 - `pixel-me.js` — 이름 옆 도트 캐릭터 (클릭하면 손 흔들며 인사). 대사는 `LINES` 배열에서 수정
 
 ## 수정 방법
