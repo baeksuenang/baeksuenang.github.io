@@ -150,6 +150,22 @@ ul { margin: 0 0 22px; padding-left: 20px; }
 .pub .links { font-size: .88rem; }
 .pub .links a + a::before { content: "·"; color: var(--muted); margin: 0 8px; }
 
+/* ===== Projects ===== */
+.projects { list-style: none; padding: 0; margin: 40px 0 0; display: grid; gap: 22px; }
+.project {
+  border: 1px solid var(--line); border-radius: 12px; padding: 22px 24px;
+  transition: border-color .15s, transform .15s, box-shadow .15s;
+}
+.project:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 22px rgba(252, 157, 13, .10); }
+.project-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.project h3 { font-size: 1.15rem; font-weight: 600; margin: 0 0 8px; line-height: 1.4; }
+.project time { color: var(--muted); font-size: .9rem; white-space: nowrap; }
+.project p { margin: 0 0 14px; color: var(--text); }
+.stack { list-style: none; padding: 0; margin: 0 0 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+.stack li { font-size: .78rem; font-weight: 600; color: var(--link); border: 1px solid var(--accent); border-radius: 4px; padding: 1px 8px; }
+.project .links { font-size: .9rem; }
+.project .status { color: var(--muted); }
+
 /* ===== CV ===== */
 .entries { list-style: none; padding: 0; margin: 0; }
 .entry { display: flex; justify-content: space-between; gap: 20px; padding: 14px 0; }
@@ -177,6 +193,9 @@ footer .wrap { padding-top: 26px; padding-bottom: 56px; font-size: .85rem; color
 
 /* ===== 모바일 ===== */
 @media (max-width: 600px) {
+  .menu { gap: 22px; }
+  .project { padding: 18px; }
+  .project-head { flex-direction: column-reverse; gap: 0; }
   .top .wrap { flex-wrap: wrap; gap: 4px; padding-bottom: 0; }
   .menu { margin-left: 0; width: 100%; }
   html { font-size: 17px; }
