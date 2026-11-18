@@ -6,7 +6,8 @@
 
 - `index.html` — About (소개, 관심 분야, 연락처 아이콘)
 - `publications.html` — 논문 목록 (연도별)
-- `cv.html` — Education / Research Experience / Awards / Timeline / Skills
+- `files/` — 논문 PDF
+- `cv.html` + `cv.js` — 항목이 셀(상자). `<div class="cell-more">` 에 넣은 사진/링크는 마우스를 올리면 펼쳐짐 (폰은 탭). Education / Research Experience / Awards / Timeline / Skills
 - `style.css` — 디자인 (맨 위 `--accent` 가 포인트 색)
 - `images/profile-1~4.jpg` + `photos.js` — 프로필 사진 (누를 때마다 찰칵 하고 다음 사진). 사진 추가는 400x480 크기로 넣고 `PHOTOS` 목록에 경로 추가
 - `easter.js` — 관심 분야 키워드에 마우스를 올리면 뜨는 애니메이션 (키워드의 `data-anim` 과 `ANIMS` 이름이 연결)

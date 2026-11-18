@@ -187,6 +187,7 @@ ul { margin: 0 0 22px; padding-left: 20px; }
 .pub .title { font-weight: 600; font-size: 1.1rem; margin-bottom: 4px; }
 .pub .author b { color: var(--link); }
 .pub .venue { color: var(--muted); }
+.pub .award { font-size: .88rem; color: var(--link); font-weight: 500; }
 .tag {
   display: inline-block; font-size: .72rem; font-weight: 600; letter-spacing: .02em;
   border: 1px solid var(--accent); color: var(--link);
@@ -201,6 +202,36 @@ ul { margin: 0 0 22px; padding-left: 20px; }
 .entry .what { font-weight: 600; }
 .entry .sub { display: block; color: var(--muted); font-size: .92rem; }
 .entry time { color: var(--muted); font-size: .9rem; white-space: nowrap; padding-top: 1px; }
+
+/* CV 셀: 항목마다 상자. 사진/링크가 있는 셀(.has-more)은 마우스를 올리면 펼쳐짐 */
+.entries:has(.cell) { display: grid; gap: 12px; }
+.entry.cell {
+  display: block; position: relative; padding: 16px 20px;
+  border: 1px solid var(--line); border-radius: 12px; background: #fff;
+  transition: border-color .2s, box-shadow .2s, transform .2s;
+}
+.cell-main { display: flex; justify-content: space-between; gap: 20px; }
+.cell.has-more { cursor: pointer; }
+.cell.has-more::after {            /* 펼칠 게 있다는 작은 표시 */
+  content: ""; position: absolute; top: 12px; right: 12px; width: 6px; height: 6px;
+  border-radius: 50%; background: var(--accent); opacity: .55; transition: transform .2s, opacity .2s;
+}
+.cell.has-more:hover, .cell.has-more:focus-within, .cell.has-more.open {
+  border-color: var(--accent); box-shadow: 0 8px 22px rgba(252, 157, 13, .10); outline: none;
+}
+.cell.has-more:hover::after, .cell.has-more:focus-within::after, .cell.has-more.open::after { transform: scale(0); opacity: 0; }
+.cell-more { max-height: 0; overflow: hidden; opacity: 0; transition: max-height .4s ease, opacity .25s ease, margin-top .3s; }
+.cell.has-more:hover .cell-more, .cell.has-more:focus-within .cell-more, .cell.has-more.open .cell-more {
+  max-height: 560px; opacity: 1; margin-top: 14px;
+}
+.cell-media { display: flex; gap: 10px; margin-bottom: 12px; overflow-x: auto; }
+.cell-media img { height: 220px; width: auto; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 8px; display: block; }
+.cell-links { display: flex; flex-wrap: wrap; gap: 8px; }
+.cell-links a {
+  font-size: .85rem; font-weight: 500; padding: 4px 12px; border-radius: 999px;
+  background: var(--accent-soft); color: var(--link);
+}
+.cell-links a:hover { background: var(--accent); color: #fff; text-decoration: none; }
 
 .skills td { padding: 10px 32px 10px 0; vertical-align: top; }
 .skills td:first-child { font-weight: 600; white-space: nowrap; }
@@ -237,6 +268,9 @@ footer .wrap { padding-top: 26px; padding-bottom: 56px; font-size: .85rem; color
   h2 { margin-top: 60px; }
   .pub-year { grid-template-columns: 1fr; gap: 4px; }
   .entry { flex-direction: column-reverse; gap: 0; }
+  .cell-main { flex-direction: column-reverse; gap: 0; }
+  .entry.cell { padding: 14px 16px; }
+  .cell-media img { height: 180px; }
   .news li, .timeline li { grid-template-columns: 1fr; gap: 0; }
 }
 

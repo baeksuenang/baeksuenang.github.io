@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261118c">
+  <link rel="stylesheet" href="style.css?v=20261118d">
 </head>
 <body>
 
@@ -28,35 +28,80 @@
 <main class="wrap">
   <h1>Curriculum Vitae</h1>
 
+  <!-- 각 항목 = <li class="entry cell">. 마우스를 올리면 펼쳐지는 사진/링크는 <div class="cell-more"> 안에 -->
   <h2>Education</h2>
   <ul class="entries">
-    <li class="entry">
-      <div>
-        <span class="what">B.S. in Artificial Intelligence and Mathematics</span> (double major), Chungnam National University
-        <span class="sub">GPA 4.24 / 4.5 · AI major 4.46 / 4.5 · Mathematics major 4.0 / 4.5</span>
+    <li class="entry cell">
+      <div class="cell-main">
+        <div>
+          <span class="what">B.S. in Artificial Intelligence and Mathematics</span> (double major), Chungnam National University
+          <span class="sub">GPA 4.24 / 4.5 · AI major 4.46 / 4.5 · Mathematics major 4.0 / 4.5</span>
+        </div>
+        <time>2024 – 2030 (expected)</time>
       </div>
-      <time>2024 – 2030 (expected)</time>
     </li>
   </ul>
 
   <h2>Research Experience</h2>
   <ul class="entries">
-    <li class="entry">
-      <div><span class="what">Undergraduate Researcher</span>, <a href="https://madelab-cnu.com/">CNU MADE Lab</a><span class="sub">Advisor: Prof. Jongryul Lee · Memory analysis of video vision-language models (VLMs)</span></div>
-      <time>Present</time>
+    <li class="entry cell has-more" tabindex="0">
+      <div class="cell-main">
+        <div><span class="what">Undergraduate Researcher</span>, CNU MADE Lab<span class="sub">Advisor: Prof. Jongryul Lee · Memory analysis of video vision-language models (VLMs)</span></div>
+        <time>Present</time>
+      </div>
+      <div class="cell-more">
+        <div class="cell-links"><a href="https://madelab-cnu.com/">MADE Lab website ↗</a></div>
+      </div>
     </li>
-    <li class="entry">
-      <div><span class="what">Visiting Student</span>, University of Illinois Urbana-Champaign<span class="sub">CNU Global Talent Track · Took a course on diffusion models, which led to a publication</span></div>
-      <time>Jul – Aug 2026</time>
+    <li class="entry cell has-more" tabindex="0">
+      <div class="cell-main">
+        <div><span class="what">Visiting Student</span>, University of Illinois Urbana-Champaign<span class="sub">CNU Global Talent Track · Took a course on diffusion models, which led to a publication (ICCE-Asia 2026)</span></div>
+        <time>Jul – Aug 2026</time>
+      </div>
+      <div class="cell-more">
+        <div class="cell-media">
+          <a href="images/uiuc-certificate.jpg"><img src="images/uiuc-certificate.jpg" alt="Holding the Certificate of Recognition at UIUC" loading="lazy"></a>
+          <a href="images/uiuc-ceremony.jpg"><img src="images/uiuc-ceremony.jpg" alt="Certificate ceremony, Global Education and Training, UIUC" loading="lazy"></a>
+        </div>
+        <div class="cell-links"><a href="files/warm-start-diffusion-icce-asia-2026.pdf">Resulting paper (PDF) ↗</a></div>
+      </div>
     </li>
   </ul>
 
   <h2>Awards</h2>
   <ul class="entries">
-    <li class="entry"><div><span class="what">Grand Prize</span> (Minister of Science and ICT Award), Digital Competition<span class="sub">Hosted by the SW-Centered University Program</span></div><time>2026</time></li>
-    <li class="entry"><div><span class="what">Excellence Award</span> (President of ETRI Award), ETRI Human Understanding Paper Competition<span class="sub">Hosted by ETRI</span></div><time>2026</time></li>
-    <li class="entry"><div><span class="what">Finalist</span>, Data Creator Camp 2026</div><time>2026</time></li>
-    <li class="entry"><div><span class="what">Contestant</span>, ICPC Seoul Regional</div><time>2026</time></li>
+    <li class="entry cell has-more" tabindex="0">
+      <div class="cell-main">
+        <div><span class="what">Grand Prize</span> (Deputy Prime Minister &amp; Minister of Science and ICT Award), 2026 AI·SW-Centered University Digital Competition — AI Track
+          <span class="sub">1st place of the final round · AI agent action prediction (14-class) with mmBERT ensembles and knowledge distillation</span></div>
+        <time>2026</time>
+      </div>
+      <div class="cell-more">
+        <div class="cell-links">
+          <a href="https://lifenlearning.chosun.com/pan/site/data/html_dir/2026/08/12/2026081201777.html">News article ↗</a>
+          <a href="https://github.com/Dacon-2026">Code &amp; slides (GitHub) ↗</a>
+        </div>
+      </div>
+    </li>
+    <li class="entry cell has-more" tabindex="0">
+      <div class="cell-main">
+        <div><span class="what">Excellence Award</span> (President of ETRI Award), 5th ETRI Human Understanding AI Paper Competition
+          <span class="sub">Lifelog-based sleep prediction with proximal causal inference · presented at ICTC 2026</span></div>
+        <time>2026</time>
+      </div>
+      <div class="cell-more">
+        <div class="cell-links">
+          <a href="https://computer.cnu.ac.kr/computer/notice/cse.do?mode=view&amp;articleNo=600917&amp;article.offset=0&amp;articleLimit=10">CNU news ↗</a>
+          <a href="files/proximal-causal-sleep-ictc-2026.pdf">Paper (PDF) ↗</a>
+        </div>
+      </div>
+    </li>
+    <li class="entry cell">
+      <div class="cell-main"><div><span class="what">Finalist</span>, Data Creator Camp 2026</div><time>2026</time></div>
+    </li>
+    <li class="entry cell">
+      <div class="cell-main"><div><span class="what">Contestant</span>, ICPC Seoul Regional</div><time>2026</time></div>
+    </li>
   </ul>
 
   <h2>Timeline</h2>
@@ -64,8 +109,8 @@
     <li><time>2026.11</time><span>Competed in the ICPC Seoul Regional</span></li>
     <li><time>2026.09</time><span>Advanced to the finals of Data Creator Camp 2026</span></li>
     <li><time>2026.07–08</time><span>Visited UIUC through the CNU Global Talent Track; studied diffusion models and published a paper</span></li>
-    <li><time>2026.07</time><span>Won the Grand Prize at the Digital Competition</span></li>
-    <li><time>2026.04–10</time><span>ETRI Human Understanding Paper Competition: Excellence Award and publication</span></li>
+    <li><time>2026.07</time><span>Won the Grand Prize (1st, AI Track) at the AI·SW-Centered University Digital Competition</span></li>
+    <li><time>2026.04–10</time><span>5th ETRI Human Understanding AI Paper Competition: Excellence Award, presented at ICTC 2026</span></li>
     <li><time>2024.03</time><span>Entered Chungnam National University</span></li>
   </ul>
 
@@ -77,6 +122,8 @@
 </main>
 
 <footer><div class="wrap">© 2026 SeongHyun Baek · Last updated Nov 2026</div></footer>
+
+<script src="cv.js?v=20261118d"></script>
 
 </body>
 </html>
