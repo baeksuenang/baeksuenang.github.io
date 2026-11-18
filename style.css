@@ -226,6 +226,7 @@ ul { margin: 0 0 22px; padding-left: 20px; }
 }
 .cell-media { display: flex; gap: 10px; margin-bottom: 12px; overflow-x: auto; }
 .cell-media img { height: 220px; width: auto; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 8px; display: block; }
+.cell-media img.wide { aspect-ratio: 4 / 3; }
 .cell-links { display: flex; flex-wrap: wrap; gap: 8px; }
 .cell-links a {
   font-size: .85rem; font-weight: 500; padding: 4px 12px; border-radius: 999px;
