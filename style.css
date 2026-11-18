@@ -149,7 +149,6 @@ ul { margin: 0 0 22px; padding-left: 20px; }
 .egg-head img { width: 34px; height: 34px; border-radius: 7px; object-fit: cover; }
 .egg-head b { display: block; font-size: .9rem; line-height: 1.2; }
 .egg-head span { font-size: .75rem; color: var(--muted); }
-.egg-flame { font-size: 1.6rem; line-height: 1; width: 34px; text-align: center; }
 .egg-big { font-size: 1.8rem; font-weight: 600; color: var(--link); line-height: 1.1; }
 .egg-big small { display: block; font-size: .72rem; font-weight: 500; color: var(--muted); margin: 2px 0 8px; }
 .egg-stats { list-style: none; margin: 0; padding: 8px 0 0; border-top: 1px solid var(--line); font-size: .8rem; }

@@ -10,7 +10,7 @@
 - `style.css` — 디자인 (맨 위 `--accent` 가 포인트 색)
 - `images/profile-1~4.jpg` + `photos.js` — 프로필 사진 (누를 때마다 찰칵 하고 다음 사진). 사진 추가는 400x480 크기로 넣고 `PHOTOS` 목록에 경로 추가
 - `easter.js` — 관심 분야 키워드에 마우스를 올리면 뜨는 애니메이션 (키워드의 `data-anim` 과 `ANIMS` 이름이 연결)
-- `hobbies.js` + `data/*.json` + `.github/workflows/hobbies.yml` — Off the Clock. solved.ac 티어 배지는 보이고, 체스·듀오링고는 단어에 마우스를 올리면 뜨는 이스터 에그. solved.ac·듀오링고는 매일 새벽 3시 자동 갱신 (solved.ac 는 저장소 Secrets 에 SOLVEDAC_CLIENT_ID / SOLVEDAC_CLIENT_SECRET 필요)
+- `hobbies.js` + `data/*.json` + `.github/workflows/hobbies.yml` — Off the Clock. solved.ac 티어 배지는 보이고, 체스는 단어에 마우스를 올리면 뜨는 이스터 에그. solved.ac 는 매일 새벽 3시 자동 갱신 (solved.ac 는 저장소 Secrets 에 SOLVEDAC_CLIENT_ID / SOLVEDAC_CLIENT_SECRET 필요)
 - `pixel-me.js` — 이름 옆 도트 캐릭터 (클릭하면 손 흔들며 인사). 대사는 `LINES` 배열에서 수정
 
 ## 수정 방법

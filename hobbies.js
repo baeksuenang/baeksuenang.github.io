@@ -1,8 +1,8 @@
 /* Off the Clock
    - solved.ac 티어: 문장 안에 작은 배지로 보임 (data/solvedac.json)
-   - chess / 듀오링고: "chess", "language-learning streak" 단어에 마우스를 올리면 점수가 뜨는 이스터 에그
-   데이터: chess.com 은 방문할 때 바로 불러오고, solved.ac·듀오링고는 GitHub Actions
-   (.github/workflows/hobbies.yml)가 매일 data/*.json 으로 저장해 둔 것을 읽음 */
+   - chess: "chess" 단어에 마우스를 올리면 점수가 뜨는 이스터 에그
+   데이터: chess.com 은 방문할 때 바로 불러오고, solved.ac 는 GitHub Actions
+   (.github/workflows/hobbies.yml)가 매일 data/solvedac.json 으로 저장해 둔 것을 읽음 */
 (function () {
   const CHESS_USER = "baekseunang";
   const fmt = n => Number(n).toLocaleString("en-US");
@@ -42,15 +42,6 @@
           <li><span>Bullet</span><b>${last("chess_bullet")}</b></li>
         </ul>`;
     }).catch(() => { content.chess = `<div class="egg-big">♟<small>couldn’t load</small></div>`; });
-
-  getJSON("data/duolingo.json").then(d => {
-    const courses = (d.courses || []).slice(0, 3)
-      .map(c => `<li><span>${c.title}</span><b>${fmt(c.xp)} XP</b></li>`).join("");
-    content.duo = `
-      <div class="egg-head"><div class="egg-flame">🔥</div><div><b>Duolingo</b><span>daily streak</span></div></div>
-      <div class="egg-big">${fmt(d.streak)}<small>days in a row</small></div>
-      <ul class="egg-stats">${courses}<li><span>Total</span><b>${fmt(d.totalXp)} XP</b></li></ul>`;
-  }).catch(() => { content.duo = `<div class="egg-big">🔥<small>couldn’t load</small></div>`; });
 
   // ---------- 팝업 ----------
   const eggs = document.querySelectorAll(".egg[data-egg]");
