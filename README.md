@@ -44,3 +44,8 @@
 python -m http.server 5500
 ```
 브라우저에서 http://localhost:5500 열기.
+
+## 수정이 바로 안 보일 때
+
+GitHub Pages 는 CSS/JS 를 브라우저에 10분간 저장해 둡니다. `style.css` 나 `*.js` 를 고치면
+세 HTML 파일의 `?v=날짜` 값을 새 값으로 바꿔 주세요 (예: `?v=20261118b` → `?v=20261120a`).
