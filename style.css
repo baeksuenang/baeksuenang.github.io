@@ -217,7 +217,7 @@ ul { margin: 0 0 22px; padding-left: 20px; }
   border-radius: 50%; background: var(--accent); opacity: .55; transition: transform .2s, opacity .2s;
 }
 .cell.has-more:hover, .cell.has-more:focus-within, .cell.has-more.open {
-  border-color: var(--accent); box-shadow: 0 8px 22px rgba(252, 157, 13, .10); outline: none;
+  border-color: var(--accent); outline: none;
 }
 .cell.has-more:hover::after, .cell.has-more:focus-within::after, .cell.has-more.open::after { transform: scale(0); opacity: 0; }
 .cell-more { max-height: 0; overflow: hidden; opacity: 0; transition: max-height .4s ease, opacity .25s ease, margin-top .3s; }
