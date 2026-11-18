@@ -76,6 +76,30 @@
     <li data-anim="causal" tabindex="0">Causal Inference</li>
     <li data-anim="gen" tabindex="0">Generative AI</li>
   </ul>
+
+  <!-- 취미: chess.com 은 방문할 때 바로 불러오고, solved.ac 는 GitHub Actions 가 하루 한 번 data/solvedac.json 으로 저장 (hobbies.js) -->
+  <h2>Off the Clock</h2>
+  <p class="muted">What I do when the GPUs are busy.</p>
+  <div class="hobbies">
+    <a class="hobby" id="hobby-chess" href="https://www.chess.com/member/baekseunang">
+      <div class="hobby-head">
+        <img class="hobby-icon round" alt="" hidden>
+        <div><div class="hobby-title">Chess</div><div class="hobby-sub">chess.com · baekseunang</div></div>
+      </div>
+      <div class="hobby-big" data-f="big">…</div>
+      <div class="hobby-label" data-f="label">Rapid rating</div>
+      <ul class="hobby-stats" data-f="stats"></ul>
+    </a>
+    <a class="hobby" id="hobby-solved" href="https://solved.ac/profile/baek1004">
+      <div class="hobby-head">
+        <img class="hobby-icon" alt="" hidden>
+        <div><div class="hobby-title">Problem Solving</div><div class="hobby-sub">solved.ac · baek1004</div></div>
+      </div>
+      <div class="hobby-big" data-f="big">…</div>
+      <div class="hobby-label" data-f="label">Tier</div>
+      <ul class="hobby-stats" data-f="stats"></ul>
+    </a>
+  </div>
 </main>
 
 <footer><div class="wrap">© 2026 SeongHyun Baek · Last updated Nov 2026</div></footer>
@@ -83,6 +107,7 @@
 <script src="pixel-me.js"></script>
 <script src="photos.js"></script>
 <script src="easter.js"></script>
+<script src="hobbies.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,38 @@
+# solved.ac 는 브라우저에서 바로 불러올 수 없어서, 하루 한 번 여기서 받아와 data/solvedac.json 에 저장
+name: Update hobby stats
+
+on:
+  schedule:
+    - cron: "0 18 * * *"   # 매일 한국시간 새벽 3시
+  workflow_dispatch:        # Actions 탭에서 직접 실행도 가능
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch solved.ac profile
+        run: |
+          curl -sf -A "Mozilla/5.0 (homepage stats updater)" \
+            "https://solved.ac/api/v3/user/show?handle=baek1004" \
+          | jq '{handle, tier, rating, solvedCount, class, maxStreak, updatedAt: (now | todate)}' \
+          > data/solvedac.new.json
+          # 숫자가 바뀌었을 때만 교체 (시간만 바뀐 커밋은 만들지 않음)
+          if ! diff <(jq 'del(.updatedAt)' data/solvedac.json) <(jq 'del(.updatedAt)' data/solvedac.new.json) > /dev/null; then
+            mv data/solvedac.new.json data/solvedac.json
+          else
+            rm data/solvedac.new.json
+          fi
+
+      - name: Commit if changed
+        run: |
+          if ! git diff --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -am "Update solved.ac stats"
+            git push
+          fi
