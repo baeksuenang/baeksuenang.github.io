@@ -133,24 +133,28 @@ ul { margin: 0 0 22px; padding-left: 20px; }
 .news li { display: grid; grid-template-columns: 96px 1fr; gap: 12px; padding: 4px 0; }
 .news time { color: var(--muted); font-size: .9rem; padding-top: 1px; }
 
-/* ===== Off the Clock (취미 카드) ===== */
-.hobbies { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 8px; }
-.hobby {
-  display: block; color: var(--text); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px;
-  transition: border-color .15s, transform .15s, box-shadow .15s;
+/* ===== Off the Clock ===== */
+.otc { line-height: 2; }
+.tier-badge {
+  display: inline-flex; align-items: center; gap: 5px; vertical-align: -2px;
+  font-weight: 600; font-size: .9rem; padding: 0 10px 0 6px; border: 1px solid var(--line); border-radius: 999px;
 }
-.hobby:hover { text-decoration: none; border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 22px rgba(252, 157, 13, .10); }
-.hobby-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-.hobby-icon { width: 40px; height: 40px; object-fit: contain; }
-.hobby-icon.round { border-radius: 8px; object-fit: cover; }
-.hobby-title { font-weight: 600; line-height: 1.3; }
-.hobby-sub { font-size: .82rem; color: var(--muted); line-height: 1.3; }
-.hobby-big { font-size: 1.9rem; font-weight: 600; line-height: 1.2; color: var(--link); }
-.hobby-label { font-size: .85rem; color: var(--muted); margin-bottom: 12px; }
-.hobby-stats { list-style: none; padding: 12px 0 0; margin: 0; border-top: 1px solid var(--line); font-size: .9rem; }
-.hobby-stats li { display: flex; justify-content: space-between; padding: 3px 0; }
-.hobby-stats span { color: var(--muted); }
-.hobby-stats b { font-weight: 600; }
+.tier-badge img { width: 16px; height: 20px; }
+.tier-badge:hover { text-decoration: none; border-color: currentColor; }
+/* 이스터 에그 단어: 평소엔 본문처럼, 점선만 살짝 */
+.egg { color: inherit; text-decoration: underline dotted var(--line); text-underline-offset: 4px; cursor: help; }
+.egg:hover, .egg:focus-visible { color: var(--link); text-decoration-color: var(--accent); outline: none; }
+.egg-pop { width: 230px; }
+.egg-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.egg-head img { width: 34px; height: 34px; border-radius: 7px; object-fit: cover; }
+.egg-head b { display: block; font-size: .9rem; line-height: 1.2; }
+.egg-head span { font-size: .75rem; color: var(--muted); }
+.egg-flame { font-size: 1.6rem; line-height: 1; width: 34px; text-align: center; }
+.egg-big { font-size: 1.8rem; font-weight: 600; color: var(--link); line-height: 1.1; }
+.egg-big small { display: block; font-size: .72rem; font-weight: 500; color: var(--muted); margin: 2px 0 8px; }
+.egg-stats { list-style: none; margin: 0; padding: 8px 0 0; border-top: 1px solid var(--line); font-size: .8rem; }
+.egg-stats li { display: flex; justify-content: space-between; padding: 2px 0; }
+.egg-stats span { color: var(--muted); }
 
 /* ===== Publications ===== */
 .legend { font-size: .85rem; color: var(--muted); }
@@ -198,7 +202,6 @@ footer .wrap { padding-top: 26px; padding-bottom: 56px; font-size: .85rem; color
 @media (max-width: 600px) {
   .top .wrap { flex-wrap: wrap; gap: 4px; padding-bottom: 0; }
   .menu { margin-left: 0; width: 100%; }
-  .hobbies { grid-template-columns: 1fr; }
   html { font-size: 17px; }
   main.wrap { padding-top: 44px; }
   .intro { grid-template-columns: 1fr; gap: 20px; }

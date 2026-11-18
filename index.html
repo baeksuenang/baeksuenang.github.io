@@ -77,29 +77,15 @@
     <li data-anim="gen" tabindex="0">Generative AI</li>
   </ul>
 
-  <!-- 취미: chess.com 은 방문할 때 바로 불러오고, solved.ac 는 GitHub Actions 가 하루 한 번 data/solvedac.json 으로 저장 (hobbies.js) -->
+  <!-- 취미: solved.ac 티어는 보이게, 체스·듀오링고는 단어에 마우스를 올려야 보이는 이스터 에그 (hobbies.js)
+       solved.ac·듀오링고는 GitHub Actions 가 매일 data/*.json 으로 저장, 체스는 방문할 때 바로 불러옴 -->
   <h2>Off the Clock</h2>
-  <p class="muted">What I do when the GPUs are busy.</p>
-  <div class="hobbies">
-    <a class="hobby" id="hobby-chess" href="https://www.chess.com/member/baekseunang">
-      <div class="hobby-head">
-        <img class="hobby-icon round" alt="" hidden>
-        <div><div class="hobby-title">Chess</div><div class="hobby-sub">chess.com · baekseunang</div></div>
-      </div>
-      <div class="hobby-big" data-f="big">…</div>
-      <div class="hobby-label" data-f="label">Rapid rating</div>
-      <ul class="hobby-stats" data-f="stats"></ul>
-    </a>
-    <a class="hobby" id="hobby-solved" href="https://solved.ac/profile/baek1004">
-      <div class="hobby-head">
-        <img class="hobby-icon" alt="" hidden>
-        <div><div class="hobby-title">Problem Solving</div><div class="hobby-sub">solved.ac · baek1004</div></div>
-      </div>
-      <div class="hobby-big" data-f="big">…</div>
-      <div class="hobby-label" data-f="label">Tier</div>
-      <ul class="hobby-stats" data-f="stats"></ul>
-    </a>
-  </div>
+  <p class="otc">
+    Outside the lab, I solve algorithm problems
+    <a class="tier-badge" id="solved-badge" href="https://solved.ac/profile/baek1004"><img alt="" hidden><span>solved.ac</span></a>,
+    sometimes play <a class="egg" data-egg="chess" href="https://www.chess.com/member/baekseunang">chess</a>,
+    and try very hard not to break my <a class="egg" data-egg="duo" href="https://www.duolingo.com/profile/VNcp597045">language-learning streak</a>.
+  </p>
 </main>
 
 <footer><div class="wrap">© 2026 SeongHyun Baek · Last updated Nov 2026</div></footer>

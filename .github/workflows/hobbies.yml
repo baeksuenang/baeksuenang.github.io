@@ -1,4 +1,6 @@
-# solved.ac 는 브라우저에서 바로 불러올 수 없어서, 하루 한 번 여기서 받아와 data/solvedac.json 에 저장
+# solved.ac·듀오링고는 브라우저에서 바로 불러올 수 없어서, 하루 한 번 여기서 받아와 data/*.json 에 저장
+# solved.ac v4 API 키: 저장소 Settings → Secrets and variables → Actions 에
+#   SOLVEDAC_CLIENT_ID, SOLVEDAC_CLIENT_SECRET 두 개를 넣어 두면 됨 (없으면 solved.ac 는 건너뜀)
 name: Update hobby stats
 
 on:
@@ -12,27 +14,39 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
+    env:
+      UA: "Mozilla/5.0 (compatible; homepage-stats-updater)"
     steps:
       - uses: actions/checkout@v4
 
-      - name: Fetch solved.ac profile
+      - name: solved.ac (v4 API)
+        continue-on-error: true
+        env:
+          CLIENT_ID: ${{ secrets.SOLVEDAC_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.SOLVEDAC_CLIENT_SECRET }}
         run: |
-          curl -sf -A "Mozilla/5.0 (homepage stats updater)" \
-            "https://solved.ac/api/v3/user/show?handle=baek1004" \
-          | jq '{handle, tier, rating, solvedCount, class, maxStreak, updatedAt: (now | todate)}' \
-          > data/solvedac.new.json
-          # 숫자가 바뀌었을 때만 교체 (시간만 바뀐 커밋은 만들지 않음)
-          if ! diff <(jq 'del(.updatedAt)' data/solvedac.json) <(jq 'del(.updatedAt)' data/solvedac.new.json) > /dev/null; then
-            mv data/solvedac.new.json data/solvedac.json
-          else
-            rm data/solvedac.new.json
+          if [ -z "$CLIENT_ID" ] || [ -z "$CLIENT_SECRET" ]; then
+            echo "::notice::SOLVEDAC_CLIENT_ID / SOLVEDAC_CLIENT_SECRET 이 없어서 solved.ac 는 건너뜀"
+            exit 0
           fi
+          curl -sf -A "$UA" -H "x-client-id: $CLIENT_ID" -H "x-client-secret: $CLIENT_SECRET" \
+            "https://solved.ac/api/v4/users/baek1004" \
+          | jq '{handle, tier, rating, solvedCount, class, maxStreak}' > /tmp/solved.json
+          mv /tmp/solved.json data/solvedac.json
+
+      - name: Duolingo
+        continue-on-error: true
+        run: |
+          curl -sf -A "$UA" \
+            "https://www.duolingo.com/2017-06-30/users?username=VNCP597045&fields=users%7Bstreak,totalXp,courses%7D" \
+          | jq '.users[0] | {streak, totalXp, courses: ([.courses[] | {title, xp}] | sort_by(-.xp))}' > /tmp/duo.json
+          mv /tmp/duo.json data/duolingo.json
 
       - name: Commit if changed
         run: |
           if ! git diff --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -am "Update solved.ac stats"
+            git commit -am "Update hobby stats"
             git push
           fi
