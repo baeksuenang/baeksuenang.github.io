@@ -2,10 +2,10 @@
    사진 추가: images/ 에 400x480(5:6) 사진을 넣고 아래 목록에 경로 추가 */
 (function () {
   const PHOTOS = [
+    "images/profile-4.jpg",   // 첫 화면 사진 (노란 머리)
     "images/profile-1.jpg",
     "images/profile-2.jpg",
-    "images/profile-3.jpg",
-    "images/profile-4.jpg"
+    "images/profile-3.jpg"
   ];
 
   const box = document.querySelector(".photo");
