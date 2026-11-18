@@ -77,14 +77,44 @@
     <li data-anim="gen" tabindex="0">Generative AI</li>
   </ul>
 
-  <!-- 취미: solved.ac 티어는 보이게, 체스는 단어에 마우스를 올려야 보이는 이스터 에그 (hobbies.js)
-       solved.ac 는 GitHub Actions 가 매일 data/solvedac.json 으로 저장, 체스는 방문할 때 바로 불러옴 -->
-  <h2>Off the Clock</h2>
-  <p class="otc">
-    Outside the lab, I solve algorithm problems
-    <a class="tier-badge" id="solved-badge" href="https://solved.ac/profile/baek1004"><img alt="" hidden><span>solved.ac</span></a>,
-    and sometimes play <a class="egg" data-egg="chess" href="https://www.chess.com/member/baekseunang">chess</a>.
-  </p>
+  <!-- 이스터 에그: 관심 분야 아래 옅은 글씨를 여러 번 누르면 금이 가다가 깨지고 Off the Clock 이 나타남 (hobbies.js)
+       solved.ac 는 GitHub Actions 가 매일 data/solvedac.json 으로 저장, 체스는 열릴 때 chess.com 에서 바로 불러옴 -->
+  <div class="crack-zone">
+    <button class="crack" id="crack" type="button" aria-label="Click a few times to reveal more">
+      <span class="crack-text">hmm… wanna click?</span>
+      <svg class="crack-lines" viewBox="0 0 220 44" aria-hidden="true">
+        <path class="c1" d="M104 2 L110 14 L102 22"/>
+        <path class="c2" d="M102 22 L114 30 L108 42"/>
+        <path class="c3" d="M110 14 L132 10 L150 18 M102 22 L80 26 L62 20"/>
+        <path class="c4" d="M114 30 L140 34 L168 28 M80 26 L58 36 L36 30 M132 10 L140 2"/>
+      </svg>
+    </button>
+  </div>
+
+  <section class="otc" id="otc" hidden>
+    <h2>Off the Clock</h2>
+    <p class="muted">You found it. What I do when the GPUs are busy.</p>
+    <div class="hobbies">
+      <a class="hobby" id="hobby-solved" href="https://solved.ac/profile/baek1004">
+        <div class="hobby-head">
+          <img class="hobby-icon" alt="" hidden>
+          <div><div class="hobby-title">Problem Solving</div><div class="hobby-sub">solved.ac · baek1004</div></div>
+        </div>
+        <div class="hobby-big" data-f="big">…</div>
+        <div class="hobby-label" data-f="label">Tier</div>
+        <ul class="hobby-stats" data-f="stats"></ul>
+      </a>
+      <a class="hobby" id="hobby-chess" href="https://www.chess.com/member/baekseunang">
+        <div class="hobby-head">
+          <img class="hobby-icon round" alt="" hidden>
+          <div><div class="hobby-title">Chess</div><div class="hobby-sub">chess.com · baekseunang</div></div>
+        </div>
+        <div class="hobby-big" data-f="big">…</div>
+        <div class="hobby-label" data-f="label">Rapid rating</div>
+        <ul class="hobby-stats" data-f="stats"></ul>
+      </a>
+    </div>
+  </section>
 </main>
 
 <footer><div class="wrap">© 2026 SeongHyun Baek · Last updated Nov 2026</div></footer>
