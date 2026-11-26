@@ -39,6 +39,7 @@
       section.hidden = false;
       if (!reduce) section.classList.add("reveal");
       load();
+      document.dispatchEvent(new Event("otc:open")); // 방명록(guestbook.js)이 이때 글을 불러옴
     }, reduce ? 0 : 650);
   }
 
