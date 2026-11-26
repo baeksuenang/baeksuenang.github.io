@@ -178,32 +178,11 @@ ul { margin: 0 0 22px; padding-left: 20px; }
 .hobby-stats span { color: var(--muted); }
 .hobby-stats b { font-weight: 600; }
 
-/* 방명록 */
+/* 방명록 (giscus) */
 .guestbook { margin-top: 48px; }
 .guestbook h3 { font-size: 1.2rem; font-weight: 600; margin: 0 0 4px; }
-.gb-form { display: grid; gap: 10px; margin: 16px 0 24px; }
-.gb-form[hidden] { display: none; }
-.gb-form input, .gb-form textarea {
-  font: inherit; font-size: .95rem; padding: 10px 14px; border: 1px solid var(--line); border-radius: 10px;
-  background: #fff; color: var(--text); resize: vertical;
-}
-.gb-form input:focus, .gb-form textarea:focus { outline: none; border-color: var(--accent); }
-.gb-form input[name="name"] { max-width: 240px; }
-.gb-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
-.gb-row { display: flex; justify-content: flex-end; align-items: center; gap: 14px; }
-.gb-status { font-size: .85rem; color: var(--muted); }
-.gb-form button {
-  font: 500 .92rem var(--font); padding: 8px 20px; border: 0; border-radius: 999px;
-  background: var(--accent); color: #fff; cursor: pointer;
-}
-.gb-form button:hover { background: var(--link); }
-.gb-form button:disabled { opacity: .5; cursor: default; }
-.gb-list { list-style: none; padding: 0; margin: 0; }
-.gb-list li { padding: 14px 0; border-top: 1px solid var(--line); }
-.gb-head { display: flex; justify-content: space-between; gap: 12px; font-size: .92rem; }
-.gb-head time { color: var(--muted); font-size: .82rem; }
-.gb-list p { margin: 4px 0 0; white-space: pre-wrap; word-break: break-word; }
-.gb-list .gb-empty { color: var(--muted); font-size: .92rem; border-top: 0; }
+#gb-giscus { margin-top: 16px; }
+.gb-empty { color: var(--muted); font-size: .92rem; }
 
 /* ===== Publications ===== */
 .legend { font-size: .85rem; color: var(--muted); }
