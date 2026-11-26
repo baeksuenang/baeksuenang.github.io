@@ -7,7 +7,7 @@
     repo: "baeksuenang/baeksuenang.github.io",
     repoId: "R_kgDOVx3l4w",
     category: "Guestbook",
-    categoryId: ""            // Discussions 에 Guestbook 카테고리를 만든 뒤 채움
+    categoryId: "DIC_kwDOVx3l484DL_Tz"
   };
 
   const box = document.getElementById("gb-giscus");
