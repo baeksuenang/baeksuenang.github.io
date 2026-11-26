@@ -24,7 +24,8 @@
       "data-category": GISCUS.category, "data-category-id": GISCUS.categoryId,
       "data-mapping": "specific", "data-term": "guestbook", "data-strict": "1",
       "data-reactions-enabled": "1", "data-emit-metadata": "0", "data-input-position": "top",
-      "data-theme": "light", "data-lang": "en", "data-loading": "lazy"
+      "data-theme": "https://baeksuenang.github.io/giscus-theme.css?v=1",   // 주황 테마 (giscus-theme.css)
+       "data-lang": "en", "data-loading": "lazy"
     }).forEach(([k, v]) => s.setAttribute(k, v));
     s.crossOrigin = "anonymous"; s.async = true;
     box.appendChild(s);
